@@ -10,7 +10,7 @@ export class Cache {
   private fullUri: string;
 
   constructor(request: Request) {
-    this.fullUri = request.getFullUri();
+    this.fullUri = request.getFullUri().toLowerCase();
   }
 
   public set(data: any) {

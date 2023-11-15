@@ -67,7 +67,7 @@ class Main {
     this.router.get("getTeacherSchedule", async (context) => {
       const query = new Query(context);
       const teacherId = query.getFieldAsString("teacherId");
-      const teacherSchedule = await groups.search(teacherId);
+      const teacherSchedule = await teachers.getSchedule(teacherId);
       context.body = teacherSchedule;
     });
   }

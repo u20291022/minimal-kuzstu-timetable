@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timetable</title>
+</head>
+<body>
+  <table align="center">
+    <tr align="center">
+      <td>
+        <select id="searchType">
+          <option value="group">Группа</option>
+          <option value="teacher">Преподаватель</option>
+        </select>
+        
+        <input id="searchInput" type="text">
+        <input id="searchButton" type="button" value="Поиск">
+      </td>
+    </tr>
+
+    <tr align="center">
+      <td>
+        <input id="dateInput" type="date">
+      </td>
+    </tr>
+
+    <tr align="center">
+      <td>
+        <p id="currentSearchTarget">...</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <table id="timetable" align="center" border="1" width="100%">
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>
