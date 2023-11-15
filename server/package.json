@@ -1,0 +1,24 @@
+{
+  "name": "kuzstu-timetable-server",
+  "version": "1.0.0",
+  "description": "Fast server for KuzSTU timetable website",
+  "main": "src/index.ts",
+  "repository": "https://github.com/u20291022/kuzstu-timetable.git",
+  "author": "u20291022",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "run-script-os",
+    "start:win32": "tsc && node dist/index.js",
+    "start:linux": "tsc; node dist/index.js",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@koa/router": "^12.0.1",
+    "@types/koa__router": "^12.0.4",
+    "@types/node": "^20.9.0",
+    "axios": "^1.6.1",
+    "koa": "^2.14.2",
+    "run-script-os": "^1.1.6"
+  }
+}
