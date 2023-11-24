@@ -4,6 +4,8 @@ function main() {
   inputs.setCurrentDateToInput();
   inputs.listenChangeEventOnDateInput();
   inputs.listenClickEventOnSearchButton();
+
+  getScheduleByTypeAndId("group", "6479", "ИТб-222"); // default onload
 }
 
 function getScheduleByTypeAndId(type, id, name) {
@@ -88,10 +90,10 @@ class Inputs {
 const inputs = new Inputs();
 
 class URI {
-  searchGroup = "https://localhost/timetable/searchGroup?groupName=";
-  getGroupSchedule = "https://localhost/timetable/getGroupSchedule?groupId=";
-  searchTeacher = "https://localhost/timetable/searchTeacher?teacherName=";
-  getTeacherSchedule = "https://localhost/timetable/getTeacherSchedule?teacherId=";
+  searchGroup = "https://api.u20291022.info/timetable/searchGroup?groupName=";
+  getGroupSchedule = "https://api.u20291022.info/timetable/getGroupSchedule?groupId=";
+  searchTeacher = "https://api.u20291022.info/timetable/searchTeacher?teacherName=";
+  getTeacherSchedule = "https://api.u20291022.info/timetable/getTeacherSchedule?teacherId=";
 
   getSearchUriByType(searchType) {
     return searchType === "group" ? this.searchGroup : this.searchTeacher;
@@ -142,6 +144,19 @@ class Display {
       {
         // time and lesson number
         if (!previousLesson || lesson.lesson_number !== previousLesson.lesson_number) {
+          // add empty row between lessons
+          if (lessonId > 0) {
+            html.openTableRowTag();
+            {
+              html.openTableDataTag("colspan='2'");
+              {
+                html.paragraph("");
+              }
+              html.closeTableDataTag();
+            }
+            html.closeTableRowTag();
+          }
+          
           html.openTableRowTag();
           {
             html.openTableDataTag(`align="center" colspan="2"`);
