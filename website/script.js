@@ -1,7 +1,9 @@
+const lessonsTimes = [ "09:00", "10:50", "13:20", "15:10", "17:00", "18:50", "20:30" ];
 let lessons = [];
 
 function main() {
-  inputs.setCurrentDateToInput();
+  inputs.setNowDateToInput();
+  inputs.listenDateButtons();
   inputs.listenChangeEventOnDateInput();
   inputs.listenClickEventOnSearchButton();
 
@@ -12,7 +14,7 @@ function getScheduleByTypeAndId(type, id, name) {
   const request = new XMLHttpRequest();
   const requestUri = uri.getScheduleUriByType(type);
   const fullUri = requestUri + id;
-    
+  
   request.open("get", fullUri);
   request.send();
 
@@ -31,9 +33,43 @@ class Inputs {
   searchTypeElement = document.getElementById("searchType");
   searchInputElement = document.getElementById("searchInput");
   searchButtonElement = document.getElementById("searchButton");
-  dateInputElement = document.getElementById("dateInput");
+
   timetableElement = document.getElementById("timetable");
   currentSearchTargetElement = document.getElementById("currentSearchTarget");
+
+  dateInputElement = document.getElementById("dateInput");
+  dateNextElement = document.getElementById("dateNext");
+  dateBackElement = document.getElementById("dateBack");
+
+  listenDateButtons() {
+    const dayTime = 24 * 60 * 60 * 1000;
+
+    this.dateBackElement.addEventListener("click", () => {
+      const currentDate = new Date(this.getCurrentDate());
+      const currentTime = currentDate.getTime();
+
+      currentDate.setTime(currentTime - dayTime);
+
+      const currentDateString = currentDate.toLocaleDateString("fr-CA");
+      this.setCurrentDate(currentDateString);
+
+      const filteredLessons = lessons.filter((lesson) => lesson.date_lesson === currentDateString);
+      display.displaySchedule(filteredLessons);
+    })
+
+    this.dateNextElement.addEventListener("click", () => {
+      const currentDate = new Date(this.getCurrentDate());
+      const currentTime = currentDate.getTime();
+
+      currentDate.setTime(currentTime + dayTime);
+
+      const currentDateString = currentDate.toLocaleDateString("fr-CA");
+      this.setCurrentDate(currentDateString);
+
+      const filteredLessons = lessons.filter((lesson) => lesson.date_lesson === currentDateString);
+      display.displaySchedule(filteredLessons);
+    })
+  }
 
   listenClickEventOnSearchButton() {
     this.searchButtonElement.addEventListener("click", () => {
@@ -69,6 +105,15 @@ class Inputs {
   getCurrentDate() {
     return this.dateInputElement.value;
   }
+
+  setNowDateToInput() {
+    const currentDateString = new Date().toLocaleDateString("fr-CA"); // fr-CA is YYYY-mm-dd
+    this.setCurrentDate(currentDateString);
+  }
+
+  setCurrentDate(dateString) {
+    this.dateInputElement.value = dateString;
+  }
   
   getSearchType() {
     return this.searchTypeElement.value; // group || teacher
@@ -76,10 +121,6 @@ class Inputs {
 
   getSearchText() {
     return this.searchInputElement.value;
-  }
-
-  setCurrentDateToInput() {
-    this.dateInputElement.value = new Date().toLocaleDateString("fr-CA"); // fr-CA is YYYY-mm-dd
   }
 
   setSearchTarget(target) {
@@ -161,7 +202,7 @@ class Display {
           {
             html.openTableDataTag(`align="center" colspan="2"`);
             {
-              html.text(`${lesson.lesson_number} пара`);
+              html.text(`${lesson.lesson_number} пара - ${lessonsTimes[lesson.lesson_number - 1]}`);
             }
             html.closeTableDataTag();
           }
